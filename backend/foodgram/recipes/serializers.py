@@ -2,7 +2,10 @@ import re
 
 from rest_framework import serializers
 
-from .models import Tag
+from .models import (
+    Tag,
+    Ingredient,
+)
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -21,3 +24,10 @@ class TagSerializer(serializers.ModelSerializer):
         if not re.match(r'#[0-9a-fA-F]{6}', color):
             raise serializers.ValidationError(
                 {'color': 'Неверный формат цвета'})
+
+
+class IngredientSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Ingredient
+        fields = ('id', 'name', 'measurement_unit')
