@@ -53,7 +53,7 @@ class Base64ImageField(serializers.ImageField):
 
 
 class RecipeSerializer(serializers.ModelSerializer):
-    image = Base64ImageField(required=True, allow_null=True)
+    image = Base64ImageField(required=True, allow_null=False)
     ingredients = serializers.StringRelatedField(many=True, read_only=True)
     tags = serializers.PrimaryKeyRelatedField(many=True,
                                               queryset=Tag.objects.all())
@@ -128,6 +128,11 @@ class RecipeSerializer(serializers.ModelSerializer):
         tags = validated_data.pop('tags')
         Recipe.objects.filter(pk=instance.pk).update(**validated_data)
         instance.tags.set(tags)
+
+        image = validated_data.pop('image')
+        instance.image = image
+        instance.save(update_fields=['image'])
+        print(instance.image)
 
         ingredients = self.initial_data.get('ingredients')
         if ingredients is None or ingredients == []:
