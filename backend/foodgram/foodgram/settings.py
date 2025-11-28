@@ -123,7 +123,7 @@ STATIC_ROOT = BASE_DIR / 'collected_static'
 
 # Media
 
-MEDIA_URL = '/'
+MEDIA_URL = '/images/'
 
 MEDIA_ROOT = BASE_DIR / 'images'
 

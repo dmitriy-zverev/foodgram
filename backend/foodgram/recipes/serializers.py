@@ -132,7 +132,6 @@ class RecipeSerializer(serializers.ModelSerializer):
         image = validated_data.pop('image')
         instance.image = image
         instance.save(update_fields=['image'])
-        print(instance.image)
 
         ingredients = self.initial_data.get('ingredients')
         if ingredients is None or ingredients == []:

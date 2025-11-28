@@ -66,10 +66,23 @@ class UserSerializer(BaseUserSerializer):
             return False
 
         user = request.user
-        if user.is_anonymous:
+        if user.is_anonymous or user == obj:
             return False
 
-        if user == obj:
-            return True
+        return Follow.objects.filter(author=obj, follower=user).exists()
 
-        return Follow.objects.filter(author=user, follower=obj).exists()
+
+class FollowSerializer(serializers.ModelSerializer):
+    author = UserSerializer(required=False)
+    follower = UserSerializer(required=False)
+
+    class Meta:
+        model = Follow
+        fields = ('id', 'author', 'follower')
+        read_only_fields = ('author', 'follower')
+
+    def create(self, validated_data):
+        if Follow.objects.filter(author=validated_data['author'],
+                                 follower=validated_data['follower']).exists():
+            raise serializers.ValidationError({'author': 'Already following'})
+        return super().create(validated_data)
