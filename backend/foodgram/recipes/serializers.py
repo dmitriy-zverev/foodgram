@@ -10,6 +10,7 @@ from .models import (
     Ingredient,
     Recipe,
     RecipeToIngredient,
+    FavoriteRecipe,
 )
 
 from users.serializers import (UserSerializer)
@@ -70,7 +71,13 @@ class RecipeSerializer(serializers.ModelSerializer):
                             'is_in_shopping_cart')
 
     def get_is_favorited(self, obj):
-        return False
+        user = self.context['request'].user
+        if user.is_anonymous:
+            return False
+
+        favorite = FavoriteRecipe.objects.filter(user=user, recipe=obj)
+
+        return favorite.exists()
 
     def get_is_in_shopping_cart(self, obj):
         return False
@@ -188,3 +195,13 @@ class RecipeSerializer(serializers.ModelSerializer):
         data['ingredients'] = ingredient_data
 
         return data
+
+
+class FavoriteRecipeSerializer(serializers.ModelSerializer):
+    user = UserSerializer(required=False)
+    recipe = RecipeSerializer(required=False)
+
+    class Meta:
+        model = FavoriteRecipe
+        fields = ('id', 'user', 'recipe')
+        read_only_fields = ('id', 'user', 'recipe')

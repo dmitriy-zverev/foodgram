@@ -63,3 +63,19 @@ class RecipeToIngredient(models.Model):
 
     def __str__(self):
         return f'{self.recipe.name}: {self.ingredient.name} ({self.amount})'
+
+
+class FavoriteRecipe(models.Model):
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             blank=False,
+                             null=False,
+                             related_name='favoriterecipe_users')
+    recipe = models.ForeignKey(Recipe,
+                               on_delete=models.CASCADE,
+                               blank=False,
+                               null=False,
+                               related_name='favoriterecipe_recipes')
+
+    def __str__(self):
+        return f'{self.user.username} -> {self.recipe.name}'
