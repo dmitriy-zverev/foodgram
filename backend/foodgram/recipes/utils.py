@@ -25,6 +25,6 @@ def recipes_to_csv(recipes):
 
     csv_string = ''
     for ingredient in ingredients:
-        csv_string += f'{ingredient['name']},{ingredient['amount']},{ingredient['measurement_unit']}\n'
+        csv_string += f'{ingredient["name"]},{ingredient["amount"]},{ingredient["measurement_unit"]}\n'
 
     return csv_string

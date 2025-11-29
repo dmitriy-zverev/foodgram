@@ -102,7 +102,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 {'tags': 'Repeated items not allowed'})
 
-        cooking_time = attrs.get('cooking_time')
+        cooking_time = int(attrs.get('cooking_time'))
         if cooking_time <= 0:
             raise serializers.ValidationError(
                 {'cooking_time': 'Must be greater than zero'})
@@ -122,7 +122,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             if not current_ingredient.exists():
                 raise serializers.ValidationError(
                     {'ingredients': 'Not exists'})
-            if ingredient['amount'] <= 0:
+            if int(ingredient['amount']) <= 0:
                 raise serializers.ValidationError(
                     {'ingredients': {
                         'amount': 'Must be greater then zero'
@@ -166,7 +166,7 @@ class RecipeSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     {'ingredients': 'Not exists'})
 
-            if ingredient['amount'] <= 0:
+            if int(ingredient['amount']) <= 0:
                 raise serializers.ValidationError(
                     {'ingredients': {
                         'amount': 'Must be greater then zero'

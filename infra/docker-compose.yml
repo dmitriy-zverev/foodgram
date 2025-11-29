@@ -1,6 +1,7 @@
 volumes: 
   pg_data:
   static:
+  media:
 
 services:
   db:
@@ -14,6 +15,7 @@ services:
     env_file: ../.env
     volumes:
       - static:/static
+      - media:/images/images
     depends_on:
       - db
   frontend:
@@ -30,6 +32,7 @@ services:
       - "80:80"
     volumes:
       - static:/static
+      - media:/images/images
       - ../docs/redoc.html:/static/redoc.html:ro
       - ../docs/openapi-schema.yml:/static/openapi-schema.yml:ro
     depends_on:

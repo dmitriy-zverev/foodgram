@@ -21,6 +21,10 @@ from .serializers import (
     RecipeSerializer,
 )
 
+from .filters import RecipeFilter
+
+from .pagination import DefaultPagination
+
 from .utils import recipes_to_csv
 
 
@@ -29,6 +33,7 @@ class TagViewSet(viewsets.ModelViewSet):
     serializer_class = TagSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     http_method_names = ['get']
+    pagination_class = None
 
 
 class IngredientViewSet(viewsets.ModelViewSet):
@@ -38,16 +43,19 @@ class IngredientViewSet(viewsets.ModelViewSet):
     http_method_names = ['get']
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']
+    pagination_class = None
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
-    queryset = Recipe.objects.select_related('author').all()
+    queryset = Recipe.objects.select_related('author').prefetch_related(
+        'tags').all()
     serializer_class = RecipeSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['name', 'author']
-    filterset_fields = ['name', 'author']
+    filterset_class = RecipeFilter
     http_method_names = ['get', 'post', 'patch', 'delete']
+    pagination_class = DefaultPagination
 
     def get_queryset(self):
         queryset = Recipe.objects.all()
@@ -95,7 +103,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         recipe = Recipe.objects.filter(pk=pk)
         if not recipe.exists():
             return Response({'detail': 'Recipe not exists'},
-                            status=status.HTTP_404_NOT_FOUND)
+                            status=status.HTTP_400_BAD_REQUEST)
         recipe = recipe[0]
 
         if request.method == 'DELETE':
@@ -131,7 +139,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         recipe = Recipe.objects.filter(pk=pk)
         if not recipe.exists():
             return Response({'detail': 'Recipe not exists'},
-                            status=status.HTTP_404_NOT_FOUND)
+                            status=status.HTTP_400_BAD_REQUEST)
         recipe = recipe[0]
 
         if request.method == 'DELETE':
