@@ -40,7 +40,7 @@ jobs:
   #       cd backend/
   #       python manage.py test
   build_backend_and_push_to_docker_hub:
-    name: Push Docker image to Dockerhub
+    name: Push backend Docker image to Dockerhub
     runs-on: ubuntu-latest
     # needs: backend_tests
     steps:
@@ -96,7 +96,7 @@ jobs:
           push: true
           tags: dmitriyvzverev/foodgram_frontend:latest
   build_nginx_and_push_to_docker_hub:
-    name: Push gateway Docker image to DockerHub
+    name: Push nginx Docker image to DockerHub
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
