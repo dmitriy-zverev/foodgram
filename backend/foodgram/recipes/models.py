@@ -45,7 +45,7 @@ class Recipe(models.Model):
     cooking_time = models.PositiveIntegerField(null=False, blank=False)
 
     def __str__(self):
-        return self.name
+        return f'{self.name} ({self.author.username})'
 
 
 class RecipeToIngredient(models.Model):
