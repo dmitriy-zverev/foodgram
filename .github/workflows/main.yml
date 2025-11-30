@@ -56,7 +56,7 @@ jobs:
       - name: Push to Dockerhub
         uses: docker/build-push-action@v4
         with:
-          context: ./backend/
+          context: ./backend/foodgram/
           push: true
           tags: dmitriyvzverev/foodgram_backend:latest
   # frontend_tests:
@@ -138,7 +138,7 @@ jobs:
         username: ${{ secrets.USER }}
         key: ${{ secrets.SSH_KEY }}
         script: |
-          cd foodgram/infra
+          cd foodgram
           sudo docker compose -f docker-compose.production.yml pull
           sudo docker compose -f docker-compose.production.yml down
           sudo docker compose -f docker-compose.production.yml up -d
