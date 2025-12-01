@@ -178,6 +178,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1',
     'http://backend',
     'http://nginx',
+    'https://foodgram.myftp.org',
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -187,6 +188,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://127.0.0.1',
     'http://backend',
     'http://nginx',
+    'https://foodgram.myftp.org',
 ]
 
 # Djoser
